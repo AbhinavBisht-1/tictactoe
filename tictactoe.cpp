@@ -1,147 +1,85 @@
-#include<stdio.h>
-int main()
-{
-	char a[3][3];
-	printf("\t****WELCOME TO THE GAME OF TIC TAC TOE**** \n\n");
-	printf("\t\t");
-	for(int i=0;i<=2;i++)
-	{
-		if(i==0)
-		printf("1st row  ");
-		if(i==1)
-		printf("2nd row  ");
-		if(i==2)
-		printf("3rd row  ");
-		for(int j=0;j<=2;j++)
-		{
-			if(i%2==0)
-			printf("X ");
-			else
-			printf("O ");
-		}
-		printf("\n\t\t");
-	}
-	for(int i=0;i<=2;i++)
-	{
-		for(int j=0;j<=2;j++)
-		{
-			a[i][j]='*';
-		}
-	}
-	printf("\n");
-	char ch1[15];
-	char ch2[15]; 
-	printf("FIRST PLAYER Enter your name\n");
-	scanf("%s",&ch1);
-	printf("SECOND PLAYER Enter your name\n");
-	scanf("%s",&ch2);	
-	int i1=1,i2=1;                              //index of position to be filled
-	char x,mood;
-	do
-	{
-		printf("\n");
-		for(int i=1;i<=9;i++)
-	    {
-		    if(x!='t')
-		    { 
-		    	if(i%2!=0)
-	    		{
-	    			againx:
-    				printf("%s Enter the row and column to be filled like \nr,c  i.e  2,3\n",ch1); 
-    				scanf("%d,%d",&i1,&i2);
-    				printf("\n");
-    				if(i1>=4||i2>=4||i1==0||i2==0)
-    		   		{
-			    		printf("Wrong input !!!!!\n");
-			    		fflush(stdin);
-		    			goto againx;
-		    		}
-		    		if(a[i1-1][i2-1]=='X'||a[i1-1][i2-1]=='O')
-			    	{
-			    		printf("That index is already filled . Fill another index .\n");
-			    		goto againx;
-					}
-		    		a[i1-1][i2-1]='X';
-			    	for(int i=0;i<=2;i++)
-			    	{
-			    		for(int j=0;j<=2;j++)
-			    		printf("%c ",a[i][j]);
-		    			printf("\n");
-		    		}
-				
-			    }
-		    	else
-		    	{
-		    		againo:
-		    		printf("%s Enter the row and column to be filled like \nr,c  i.e  2,3\n",ch2); 
-		    		scanf("%d,%d",&i1,&i2);
-		    		printf("\n");
-			    	if(i1>=4||i2>=4||i1==0||i2==0)
-    				{
-	    				printf("Wrong input !!!!!\n");
-	    				fflush(stdin);
-		    			goto againo;
-			    	}
-			    	if(a[i1-1][i2-1]=='X'||a[i1-1][i2-1]=='O')
-			    	{
-			    		printf("That index is already filled . Fill another index .\n");
-			    		goto againo;
-					}
-    				a[i1-1][i2-1]='O';
-	    			for(int i=0;i<=2;i++)
-		    		{
-			    		for(int j=0;j<=2;j++)
-				    	printf("%c ",a[i][j]);
-				    	printf("\n");
-				    }		
-	    		}
-		    	if((a[0][0]==a[1][1]&&a[1][1]==a[2][2])||(a[2][0]==a[1][1]&&a[1][1]==a[0][2]))
-    			{
-					if(a[1][1]=='X')
-					{
-					printf(" %s  WINS.",ch1);
-					x='t';
-					}
-					if(a[1][1]=='O')
-		            {
-		    		printf(" %s  WINS.",ch2);
-    				x='t';
-	    			}
-		    	}
-    			for(int k=0;k<=2;k++)
-	    		{
-		    		int l=0;
-					if(a[k][l]==a[k][l+1]&&a[k][l+1]==a[k][l+2])
-					{  
-						if(a[k][l+1]=='X'){
-						printf(" %s  WINS.",ch1);
-						x='t';}
-						if(a[k][l+1]=='O'){
-						printf(" %s  WINS.",ch2);
-						x='t';}
-					}
-					if(a[l][k]==a[l+1][k]&&a[l+1][k]==a[l+2][k])
-					{
-						if(a[l+1][k]=='X'){
-						printf(" %s  WINS.",ch1);
-						x='t';}
-						if(a[l+1][k]=='O'){
-						printf(" %s  WINS.",ch2);
-						x='t';}
-					}
-				}
-				i1=0;
-				i2=0;
-			}
-		}
-		if(x!='t')
-		printf(" THE GAME DRAWS . WELL PLAYED  :-)");
-		x='a';
-		printf("Want to play again ??\nPress N or n to challenge once again ... LET'S GO. \n");
-	    printf("Enter any other key to terminate.\n");
-	    fflush(stdin);
-		scanf("%c",&mood);
-	}
-	while(mood=='n'||mood=='N');
-	return 0;
+#include <stdio.h>
+
+void printBoard(char a[3][3]) {
+    for (int i=0;i<3;i++) {
+        for (int j=0;j<3;j++)
+            printf("%c ", a[i][j]);
+        printf("\n");
+    }
+}
+
+int checkWinner(char a[3][3]) {
+    for (int i=0;i<3;i++) {
+        if (a[i][0] != '*' && a[i][0] == a[i][1] && a[i][1] == a[i][2]) return 1;
+        if (a[0][i] != '*' && a[0][i] == a[1][i] && a[1][i] == a[2][i]) return 1;
+    }
+    if (a[0][0] != '*' && a[0][0] == a[1][1] && a[1][1] == a[2][2]) return 1;
+    if (a[0][2] != '*' && a[0][2] == a[1][1] && a[1][1] == a[2][0]) return 1;
+    return 0;
+}
+
+int main() {
+    char a[3][3], ch1[15], ch2[15], mood;
+    printf("****WELCOME TO TIC TAC TOE****\n");
+
+    do {
+        for (int i=0;i<3;i++)
+            for (int j=0;j<3;j++)
+                a[i][j] = '*';
+
+        printf("First player name: ");
+        scanf("%s", ch1);
+        printf("Second player name: ");
+        scanf("%s", ch2);
+
+        int turn;
+        for (turn=0; turn<9; turn++) {
+            printBoard(a);
+            int r, c;
+            while (1) {
+                if (turn % 2 == 0)
+                printf("%s enter row and col (1-3): ", ch1);
+                else
+                printf("%s enter row and col (1-3): ", ch2);
+                
+                int result = scanf("%d %d", &r, &c);
+                if (result != 2) {
+                    printf("Invalid input! Please enter numbers.\n");
+                    while (getchar() != '\n');
+                    continue;
+                }
+                if (r < 1 || r > 3 || c < 1 || c > 3) {
+                    printf("Invalid range! Enter between 1 and 3.\n");
+                    continue;
+                }
+                if (a[r-1][c-1] != '*') {
+                    printf("That spot is already filled. Try again.\n");
+                    continue;
+                }
+                break;
+            }
+
+            if (r<1 || r>3 || c<1 || c>3 || a[r-1][c-1] != '*') {
+                printf("Invalid move, try again.\n");
+                turn--;
+                continue;
+            }
+
+            a[r-1][c-1] = (turn % 2 == 0) ? 'X' : 'O';
+
+            if (checkWinner(a)) {
+                printBoard(a);
+                printf("%s wins!\n", (turn % 2 == 0) ? ch1 : ch2);
+                break;
+            }
+        }
+
+        if (turn == 9)
+            printf("Draw!\n");
+
+        printf("Play again? (N/n to play again): ");
+        scanf(" %c", &mood);
+    } while (mood == 'n' || mood == 'N');
+
+    return 0;
 }
